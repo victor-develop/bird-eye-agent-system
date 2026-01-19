@@ -290,6 +290,30 @@ session3> TaskRunner C: 读取 task-1.2.3/readme.md 并执行
 - 并行任务执行期间，可以在多个会话间切换 review
 - `@treeWork receive` 支持批量同步，可以简化进度更新
 
+### 自然语言交互（体验建议）
+
+得益于 LLM 对自然语言的高度理解，在与 TreeWork 交互时，我常常用很口语化的表达，TreeWork 都能准确理解并按照 spec 执行。
+
+**日常使用的口语化示例**：
+
+| 正式命令 | 我的口语表达 |
+|---------|------------|
+| `@treeWork subtask 设计 API` | "开个 stubtask，设计一下 API" |
+| `@treeWork populate 1.2` | "populate 一下 1.2" |
+| `@treeWork done` | "task 1.2 done le" |
+| `@treeWork next 实现数据校验` | "下一个是实现数据校验" |
+| `@treeWork drop 需求变更` | "这个任务砍了吧，需求变了" |
+| `@treeWork status` | "现在到哪一步了？" |
+| `@treeWork receive 1.2.1 1.2.2` | "1.2.1 和 1.2.2 都完成了，接收一下" |
+
+**个人体验**：
+- 完全不需要记忆那些正式命令名称
+- 用最自然的中文表达就能得到准确的执行结果
+- TreeWork 会根据上下文理解意图并映射到正确的操作
+- 交互更像在和同事对话，而不是在执行命令
+
+**我的建议**：刚开始可以对照 command reference，熟悉后直接用自然语言沟通，效率更高。
+
 ## 工作流图
 
 ```
