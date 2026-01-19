@@ -139,11 +139,11 @@ csv-import-feature/
 
 ### Step 3: Execute Tasks
 
-Copy `task-1.2.1/readme.md` to a new LLM session (TaskRunner):
+Start a new TaskRunner agent session and instruct it to read the task specification:
 
-> **TaskRunner Prompt**: Work as a TaskRunner agent. Read the readme.md below and execute the task...
+> **TaskRunner Prompt**: Work as a TaskRunner agent. Read `task-1.2.1/readme.md` to understand the task, then execute it.
 
-TaskRunner completes the task and generates `result.md` in the same directory.
+TaskRunner reads the `readme.md` file, executes the task, and generates `result.md` in the same directory.
 
 ### Step 4: Update Progress
 
