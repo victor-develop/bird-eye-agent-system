@@ -178,6 +178,59 @@ TreeWork 读取 `result.md`，更新进度树，并建议下一步。
 
 重复步骤 2-4，直到任务完成。
 
+## 使用建议
+
+### 模型选择
+
+#### TreeWork Agent - 使用最便宜、最快的模型
+
+由于 TreeWork 只负责任务规划和调度，不读取文件内容，可以使用成本最低、响应最快的模型：
+
+**推荐模型**：
+- **Grok Fast** - 成本低，速度快
+- **Gemini Flash** - 响应迅速，适合规划场景
+- **GLM-4.6V-Flash** - 性价比高
+
+**理由**：
+- 任务分解和进度追踪不需要复杂推理
+- ASCII 树状图生成不需要高算力
+- 频繁交互要求低延迟和低成本
+
+#### TaskRunner Agent - 使用较强的模型
+
+TaskRunner 负责执行具体任务，需要更强的代码理解和生成能力：
+
+**推荐模型**：
+- **Claude 3.5 Sonnet** / **GPT-4o** - 强大的代码生成能力
+- **Gemini Pro** / **Grok Beta** - 平衡性能和成本
+
+**理由**：
+- 需要准确理解代码上下文
+- 生成高质量、可运行的代码
+- 复杂问题解决需要强推理能力
+
+### Agent 使用注意事项
+
+#### TaskRunner 不需要读取 spec
+
+TaskRunner Agent **不需要** 阅读 `spec/` 目录下的规范文件。每个任务的 `readme.md` 和 `references.yaml` 已经包含了执行任务所需的全部信息：
+
+- `readme.md`: 任务目标、验收标准、约束条件
+- `references.yaml`: 需要读取的上下文文件清单
+
+TaskRunner 只需要：
+1. 读取 `readme.md` 理解任务
+2. 按 `references.yaml` 列表读取项目文件
+3. 执行任务并输出 `result.md`
+
+这样可以避免上下文溢出，保持 TaskRunner 的专注性。
+
+#### 上下文管理最佳实践
+
+- **TreeWork 负责裁剪上下文**：通过 `references.yaml` 只传递必要文件
+- **避免上下文溢出**：不要把整个项目扔给 TaskRunner
+- **利用 `result.md` 传递信息**：将关键决策和输出通过 `result.md` 传递给后续任务
+
 ## 工作流图
 
 ```
