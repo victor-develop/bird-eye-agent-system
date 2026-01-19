@@ -1,29 +1,29 @@
 # Bird-Eye Agent System
 
-> **A human-centric task orchestration framework for LLM agents - maintain full control with complete visibility.**
+> **以人为中心的 LLM Agent 任务编排框架——保持完全控制，拥有全面可见性。**
 
-A dual-agent collaboration system that empowers you to manage complex development tasks with unprecedented clarity. **TreeWork** handles planning and tracking, while **TaskRunner** executes specific tasks - with you in full control of the orchestration.
+一个双 Agent 协作系统，让您以前所未有的清晰度管理复杂的开发任务。**TreeWork** 负责规划和跟踪，而 **TaskRunner** 执行具体任务——由您完全掌控编排。
 
-## What is Bird-Eye?
+## Bird-Eye 是什么？
 
-Bird-Eye transforms how you work with AI agents by putting you in the driver's seat. Instead of a single, opaque AI process, you get:
+Bird-Eye 通过让您掌控方向盘，彻底改变您与 AI Agent 的工作方式。不再是单一、不透明的 AI 流程，您将获得：
 
-- **Clear task decomposition** with visual dependency trees
-- **Precise context control** for every task
-- **Full visibility** into progress and decision-making
-- **Git-friendly state management** for collaboration and experiments
+- **清晰的任务分解**，配合可视化的依赖树
+- **精确的上下文控制**，针对每个任务
+- **完全可见性**，了解进度和决策过程
+- **Git 友好的状态管理**，便于协作和实验
 
-Inspired by the principle that "filesystem is state machine," Bird-Eye keeps everything transparent, trackable, and recoverable.
+受"文件系统即状态机"原则启发，Bird-Eye 让一切透明、可追踪、可恢复。
 
-## Core Advantages
+## 核心优势
 
-### 🎯 Global Control View
+### 🎯 全局控制视图
 
-As the task scheduler, you maintain a bird's-eye view through **ASCII tree diagrams** showing:
-- Task dependencies and relationships
-- Real-time progress status
-- Blockers and bottlenecks
-- What comes next at any moment
+作为任务调度者，您通过 **ASCII 树状图** 保持鸟瞰视角，显示：
+- 任务依赖关系
+- 实时进度状态
+- 阻塞点和瓶颈
+- 任何时刻的下一步行动
 
 ```
 [ok]Task1.1: 需求分析
@@ -38,31 +38,31 @@ As the task scheduler, you maintain a bird's-eye view through **ASCII tree diagr
      └───►[  ]Task1.2.3: 前端设计
 ```
 
-You make intelligent scheduling decisions based on this complete picture - not AI.
+您基于这个完整画面做出智能调度决策——而非 AI。
 
-### 🎛️ Precise Context Tuning
+### 🎛️ 精确上下文调优
 
-Fine-tune TaskRunner's input to avoid both context overflow and information starvation:
+精细调优 TaskRunner 的输入，避免上下文溢出和信息匮乏：
 
-- **`references.yaml`**: Maintain a curated list of files for each task
-- **`result.md`**: Capture outputs to build precise context for subsequent tasks
-- **Granular control**: Add, remove, or adjust context references at any point
+- **`references.yaml`**: 为每个任务维护精选文件列表
+- **`result.md`**: 捕获输出，为后续任务构建精确上下文
+- **细粒度控制**: 任意时刻添加、删除或调整上下文引用
 
-You ensure TaskRunner has exactly what it needs - no more, no less.
+您确保 TaskRunner 拥有恰好所需的内容——不多不少。
 
-### 💾 Breakpoint Recovery
+### 💾 断点恢复
 
-Filesystem-based state management means:
-- **Interrupt anytime** and seamlessly resume later
-- **Git-friendly**: Branch for experiments, rollback if needed
-- **Collaboration-ready**: Share progress via git, no hidden state
-- **Zero lock-in**: All data in human-readable Markdown + YAML
+基于文件系统的状态管理意味着：
+- **随时中断**，稍后无缝恢复
+- **Git 友好**: 分支实验，必要时回滚
+- **协作就绪**: 通过 git 共享进度，无隐藏状态
+- **零锁定**: 所有数据为人可读的 Markdown + YAML
 
-Your work is never lost or trapped in an inaccessible AI session.
+您的工作永远不会丢失或被困在无法访问的 AI 会话中。
 
-## Architecture
+## 架构
 
-Bird-Eye uses a dual-agent architecture with clear separation of concerns:
+Bird-Eye 采用双 Agent 架构，职责明确分离：
 
 ```
 ┌──────────────────────────────────────────────────────────┐
@@ -86,80 +86,99 @@ Bird-Eye uses a dual-agent architecture with clear separation of concerns:
 ```
 
 ### TreeWork Agent
-- **Role**: Planning and tracking expert
-- **Responsibilities**:
-  - Decompose user requirements into task trees
-  - Visualize progress with ASCII diagrams
-  - Generate `readme.md` for each task
-  - Maintain `references.yaml` for context control
-- **Does NOT**: Execute code or modify files
+- **角色**: 规划和跟踪专家
+- **职责**:
+  - 将用户需求分解为任务树
+  - 使用 ASCII 图可视化进度
+  - 为每个任务生成 `readme.md`
+  - 维护 `references.yaml` 以控制上下文
+- **不**: 执行代码或修改文件
 
 ### TaskRunner Agent
-- **Role**: Focused execution specialist
-- **Responsibilities**:
-  - Read `readme.md` to understand task
-  - Execute code, create/modify files
-  - Output `result.md` with execution details
-  - List all changed files
-- **Does NOT**: Plan tasks or manage dependencies
+- **角色**: 专注执行专家
+- **职责**:
+  - 读取 `readme.md` 以理解任务
+  - 执行代码、创建/修改文件
+  - 输出 `result.md` 包含执行详情
+  - 列出所有更改的文件
+- **不**: 规划任务或管理依赖
 
-## Quick Start
+## 快速开始
 
-### Step 1: Initialize a Mission
+### Step 0: 下载规范文档
 
-Start a new project or feature:
+克隆仓库以获取所有规范文件：
+
+```bash
+git clone https://github.com/YOUR_USERNAME/bird-eye-agent-system.git
+cd bird-eye-agent-system
+```
+
+所有规范文档都在 `spec/` 目录中，可直接使用。
+
+### Step 0.5: 设置您的 Agent
+
+指示您的 LLM Agent 在开始前读取 `spec/` 目录中的所有文件：
+
+> **Agent 设置提示词**: 作为 Bird-Eye Agent System 工作。首先，阅读 `spec/` 目录中的所有文件以理解系统。不要跳过任何文件。
+
+这确保 Agent 对系统架构和工作流有完整了解。
+
+### Step 1: 初始化任务
+
+启动新项目或功能：
 
 ```
 @treeWork init 为后台管理系统添加 CSV 导入商品功能
 ```
 
-TreeWork creates:
+TreeWork 创建：
 ```
 csv-import-feature/
-├── readme.md          # Mission background and goals
-├── references.yaml    # Context file list
-└── progress.md        # ASCII task tree
+├── readme.md          # 任务背景和目标
+├── references.yaml    # 上下文文件列表
+└── progress.md        # ASCII 任务树
 ```
 
-### Step 2: Plan and Create Tasks
+### Step 2: 规划和创建任务
 
-Refine the task tree:
+细化任务树：
 
 ```
 @treeWork subtask 后端 API 设计
 ```
 
-TreeWork creates:
+TreeWork 创建：
 ```
 csv-import-feature/
 └── task-1.2.1/
-    ├── readme.md         # Task specification
-    └── references.yaml   # Context for this task
+    ├── readme.md         # 任务规范
+    └── references.yaml   # 此任务的上下文
 ```
 
-### Step 3: Execute Tasks
+### Step 3: 执行任务
 
-Start a new TaskRunner agent session and instruct it to read the task specification:
+启动新的 TaskRunner Agent 会话并指示其读取任务规范：
 
-> **TaskRunner Prompt**: Work as a TaskRunner agent. Read `task-1.2.1/readme.md` to understand the task, then execute it.
+> **TaskRunner 提示词**: 作为 TaskRunner agent 工作。读取 `task-1.2.1/readme.md` 以理解任务，然后执行它。
 
-TaskRunner reads the `readme.md` file, executes the task, and generates `result.md` in the same directory.
+TaskRunner 读取 `readme.md` 文件，执行任务，并在同一目录中生成 `result.md`。
 
-### Step 4: Update Progress
+### Step 4: 更新进度
 
-Report completion back to TreeWork:
+向 TreeWork 报告完成情况：
 
 ```
 @treeWork done
 ```
 
-TreeWork reads `result.md`, updates the progress tree, and suggests next steps.
+TreeWork 读取 `result.md`，更新进度树，并建议下一步。
 
-### Step 5: Continue Iteration
+### Step 5: 继续迭代
 
-Repeat Steps 2-4 until the mission is complete.
+重复步骤 2-4，直到任务完成。
 
-## Workflow Diagram
+## 工作流图
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -184,46 +203,46 @@ Repeat Steps 2-4 until the mission is complete.
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-## Command Reference
+## 命令参考
 
-### Initialization
+### 初始化
 | Command | Purpose | Example |
 |---------|---------|---------|
 | `init <desc>` | Create new mission | `@treeWork init 实现用户登录` |
 | `from <dir>` | Resume from directory | `@treeWork from docs/missions/csv` |
 
-### Planning
+### 规划
 | Command | Purpose | Example |
 |---------|---------|---------|
 | `plan <desc>` | Plan task tree (no files) | `@treeWork plan 需要A、B、C三步` |
 | `populate <id>` | Batch create task files | `@treeWork populate 1.2` |
 | `subtask <desc>` | Create subtask | `@treeWork subtask 设计 API` |
 
-### Execution Control
+### 执行控制
 | Command | Purpose | Example |
 |---------|---------|---------|
 | `next [desc]` | Complete & continue | `@treeWork next 实现数据校验` |
 | `done [summary]` | Mark task complete | `@treeWork done 数据库设计已完成` |
 | `drop <reason>` | Abandon task | `@treeWork drop 需求变更` |
 
-### Navigation & Info
+### 导航和信息
 | Command | Purpose | Example |
 |---------|---------|---------|
 | `status` | Show progress | `@treeWork status` |
 | `goto <id>` | Jump to task | `@treeWork goto 1.2.3` |
 
-### Context Management
+### 上下文管理
 | Command | Purpose | Example |
 |---------|---------|---------|
 | `ref <path> [desc]` | Add context reference | `@treeWork ref src/xxx.go 说明` |
 | `read <path>` | Read file content | `@treeWork read docs/architecture.md` |
 
-### Result Sync
+### 结果同步
 | Command | Purpose | Example |
 |---------|---------|---------|
 | `receive [ids...]` | Batch receive results | `@treeWork receive 1.2.1 1.2.2` |
 
-## Status Markers
+## 状态标记
 
 | Marker | Meaning | Usage |
 |--------|---------|-------|
@@ -232,24 +251,24 @@ Repeat Steps 2-4 until the mission is complete.
 | `[ok]` | Completed | Task and all subtasks done |
 | `[bin]` | Deprecated | No longer needed (requirements changed) |
 
-## Use Cases
+## 使用场景
 
-### ✅ Perfect For
+### ✅ 非常适合
 
-- **Complex multi-step features** with clear dependencies
-- **Exploratory development** where requirements evolve
-- **Team collaboration** with Git-based workflow
-- **Long-running projects** requiring checkpoints
-- **Code refactoring** with systematic approach
-- **Documentation-driven development**
+- **复杂的多步骤功能**，具有清晰的依赖关系
+- **探索性开发**，需求不断演进
+- **团队协作**，使用基于 Git 的工作流
+- **长期项目**，需要检查点
+- **代码重构**，采用系统化方法
+- **文档驱动开发**
 
-### ❌ Not Ideal For
+### ❌ 不太适合
 
-- **Single quick tasks** (use direct LLM conversation)
-- **Well-defined, repetitive tasks** (use scripts/tools)
-- **Simple one-off changes** (manual editing is faster)
+- **单一快速任务**（使用直接 LLM 对话）
+- **定义明确、重复性任务**（使用脚本/工具）
+- **简单的一次性更改**（手动编辑更快）
 
-## Comparison
+## 对比
 
 | Aspect | Bird-Eye | Single Agent | Project Management Tools |
 |--------|----------|--------------|--------------------------|
@@ -260,7 +279,7 @@ Repeat Steps 2-4 until the mission is complete.
 | **Flexibility** | 🟢 Adapt to changes | 🟡 Rigid | 🟢 Structured |
 | **Learning Curve** | 🟡 Moderate | 🟢 Low | 🟡 Moderate |
 
-## File Structure
+## 文件结构
 
 ```
 <mission-root>/
@@ -289,50 +308,50 @@ Repeat Steps 2-4 until the mission is complete.
 └── ...
 ```
 
-## Key Design Principles
+## 核心设计原则
 
-1. **Separation of Concerns**: Planning vs. execution, handled by specialized agents
-2. **Filesystem as State**: All progress stored in human-readable files
-3. **Git-Native**: Version control, branching, collaboration out-of-the-box
-4. **Human-in-the-Loop**: You remain the orchestrator and decision-maker
-5. **Observability First**: Every action leaves a trace in Markdown/YAML
+1. **职责分离**: 规划与执行，由专门的 Agent 处理
+2. **文件系统即状态**: 所有进度存储在人可读的文件中
+3. **Git 原生**: 版本控制、分支、协作开箱即用
+4. **人在循环**: 您仍然是编排者和决策者
+5. **可观测性优先**: 每个操作都在 Markdown/YAML 中留下痕迹
 
-## Example Mission Workflow
+## 示例任务工作流
 
-See [spec/05-workflow-example.md](./spec/05-workflow-example.md) for a complete end-to-end example of implementing a CSV import feature.
+请参阅 [spec/05-workflow-example.md](./spec/05-workflow-example.md) 了解实现 CSV 导入功能的完整端到端示例。
 
-## Deep Dive Documentation
+## 深入文档
 
-- [TreeWork Agent Specification](./spec/01-treework-agent.md)
-- [TaskRunner Agent Specification](./spec/02-taskrunner-agent.md)
-- [File Format Reference](./spec/03-file-formats.md)
-- [Complete Command Reference](./spec/04-command-reference.md)
-- [Workflow Example](./spec/05-workflow-example.md)
+- [TreeWork Agent 规范](./spec/01-treework-agent.md)
+- [TaskRunner Agent 规范](./spec/02-taskrunner-agent.md)
+- [文件格式参考](./spec/03-file-formats.md)
+- [完整命令参考](./spec/04-command-reference.md)
+- [工作流示例](./spec/05-workflow-example.md)
 
-## Why "Bird-Eye"?
+## 为什么叫"Bird-Eye"？
 
-The name embodies the system's philosophy:
+这个名字体现了系统的理念：
 
-- **Elevated perspective**: See the entire task landscape at once
-- **Clear vision**: No blind spots, dependencies are visible
-- **Strategic control**: You decide where to focus and when to pivot
-- **Agile adaptation**: Quickly adjust when requirements change
+- **全局视角**: 一次看到整个任务全貌
+- **清晰视野**: 无盲点，依赖关系可见
+- **战略控制**: 您决定专注于哪里，何时转向
+- **敏捷适应**: 需求变更时快速调整
 
-You're the bird, AI agents are your eyes and hands.
+您是鸟，AI Agents 是您的眼睛和手。
 
-## Contributing
+## 贡献
 
-Contributions are welcome! Areas for improvement:
+欢迎贡献！改进领域：
 
-- **Tooling**: CLI wrappers for TreeWork/TaskRunner
-- **Automation**: Git hooks for result validation
-- **Visualization**: Generate SVG diagrams from progress.md
-- **Integrations**: Connect with existing project management tools
+- **工具**: TreeWork/TaskRunner 的 CLI 封装
+- **自动化**: 用于结果验证的 Git 钩子
+- **可视化**: 从 progress.md 生成 SVG 图表
+- **集成**: 与现有项目管理工具连接
 
-## License
+## 许可证
 
-MIT License - see LICENSE file for details
+MIT License - 详见 LICENSE 文件
 
 ---
 
-**Built for developers who want control, clarity, and collaboration in AI-assisted development.**
+**为希望在 AI 辅助开发中获得控制、清晰和协作的开发者而构建。**
