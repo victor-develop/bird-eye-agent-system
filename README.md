@@ -185,6 +185,32 @@ csv-import-feature/
     └── references.yaml   # 此任务的上下文
 ```
 
+### Step 2.5: 微调上下文（可选）
+
+在启动 TaskRunner 前，您可以编辑任务文件来调整上下文：
+
+**编辑 `readme.md`**：
+- 补充验收标准
+- 添加约束条件
+- 澄清任务边界
+
+**编辑 `references.yaml`**：
+- 添加需要读取的文件
+- 移除不必要的文件（避免上下文溢出）
+- 调整文件描述以帮助 TaskRunner 理解上下文
+
+**示例**：
+```yaml
+# references.yaml
+- path: backend/internal/service/product.go
+  desc: 现有商品服务实现，需要扩展 CSV 导入功能
+
+- path: docs/csv-format-spec.md
+  desc: CSV 格式规范，务必遵循
+```
+
+这个步骤让 TaskRunner 获得"恰好所需"的上下文。
+
 ### Step 3: 执行任务
 
 启动新的 TaskRunner Agent 会话并指示其读取任务规范：
@@ -356,6 +382,10 @@ session3> TaskRunner C: 读取 task-1.2.3/readme.md 并执行
 │                                                                 │
 │   3.  USER  ───────►  @treeWork  ───────►  create readme.md    │
 │                                                                 │
+│   3.5 USER  ───────►  edit files   ──────►  tune context       │
+│                   (readme.md/                               │
+│                    references.yaml)                           │
+│                                                                 │
 │   4.  USER  ───────►  TaskRunner  ──────►  execute task       │
 │                     (new session)                              │
 │                                                                 │
@@ -367,6 +397,12 @@ session3> TaskRunner C: 读取 task-1.2.3/readme.md 并执行
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
+
+**关键步骤说明**：
+- **步骤 3.5（可选）**：在启动 TaskRunner 前，您可以编辑 `readme.md` 和 `references.yaml` 来微调任务说明和上下文
+  - 在 `readme.md` 中补充验收标准或约束条件
+  - 在 `references.yaml` 中添加/删除文件来控制上下文范围
+  - 这确保 TaskRunner 拥有"恰好所需"的信息
 
 ## 命令参考
 
