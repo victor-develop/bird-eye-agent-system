@@ -107,14 +107,49 @@ Bird-Eye 采用双 Agent 架构，职责明确分离：
 
 ### Step 0: 下载规范文档
 
+**如果您是人类用户**：
+
 克隆仓库以获取所有规范文件：
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/bird-eye-agent-system.git
+git clone https://github.com/victor-develop/bird-eye-agent-system.git
 cd bird-eye-agent-system
 ```
 
 所有规范文档都在 `spec/` 目录中，可直接使用。
+
+---
+
+**如果您是 LLM Agent**：
+
+无需克隆仓库，直接通过 curl 获取 spec 文件内容：
+
+```bash
+# 读取所有 spec 文件
+curl https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/README.md
+
+curl https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/01-treework-agent.md
+
+curl https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/02-taskrunner-agent.md
+
+curl https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/03-file-formats.md
+
+curl https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/04-command-reference.md
+
+curl https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/05-workflow-example.md
+```
+
+或者使用一个命令一次性读取所有文件（推荐）：
+
+```bash
+for file in README.md 01-treework-agent.md 02-taskrunner-agent.md 03-file-formats.md 04-command-reference.md 05-workflow-example.md; do
+  echo "=== spec/$file ==="
+  curl -s https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/$file
+  echo ""
+done
+```
+
+将上述输出内容直接粘贴到 LLM 对话中，即可让 Agent 完整理解系统规范。
 
 ### Step 0.5: 设置您的 Agent
 
