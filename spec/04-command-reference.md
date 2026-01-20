@@ -167,9 +167,10 @@
 **行为：**
 1. 确定子任务编号（基于当前任务）
 2. 创建子任务目录 `task-X.X.X/`
-3. 生成 `readme.md` 和 `references.yaml`
-4. 更新 `progress.md`
-5. 标记新任务为 `[..]`
+3. 生成 `readme.md`, `references.yaml`
+4. 生成 `result.md` 框架文件给 TaskRunner 填写
+5. 更新 `progress.md`
+6. 标记新任务为 `[..]`
 
 **示例：**
 ```
