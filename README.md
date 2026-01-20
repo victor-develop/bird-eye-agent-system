@@ -237,123 +237,58 @@ TreeWork 读取 `result.md`，更新进度树，并建议下一步。
 
 ### 模型选择
 
-#### TreeWork Agent - 使用最便宜、最快的模型
+**TreeWork Agent** - 用便宜、快的模型
+- Grok Fast, Gemini Flash, GLM-4.6V-Flash
+- 不读取文件，任务分解和树状图生成不需要强算力
 
-由于 TreeWork 只负责任务规划和调度，不读取文件内容，可以使用成本最低、响应最快的模型：
-
-**推荐模型**：
-- **Grok Fast** - 成本低，速度快
-- **Gemini Flash** - 响应迅速，适合规划场景
-- **GLM-4.6V-Flash** - 性价比高
-
-**理由**：
-- 任务分解和进度追踪不需要复杂推理
-- ASCII 树状图生成不需要高算力
-- 频繁交互要求低延迟和低成本
-
-#### TaskRunner Agent - 使用较强的模型
-
-TaskRunner 负责执行具体任务，需要更强的代码理解和生成能力：
-
-**推荐模型**：
-- **Claude 3.5 Sonnet** / **GPT-4o** - 强大的代码生成能力
-- **Gemini Pro** / **Grok Beta** - 平衡性能和成本
-
-**理由**：
-- 需要准确理解代码上下文
-- 生成高质量、可运行的代码
-- 复杂问题解决需要强推理能力
+**TaskRunner Agent** - 用强模型
+- Claude 3.5 Sonnet, GPT-4o, Gemini Pro
+- 需要准确理解代码、生成高质量代码、解决复杂问题
 
 ### Agent 使用注意事项
 
-#### TaskRunner 不需要读取 spec
+**TaskRunner 不需要读取 spec**
+- 每个任务的 `readme.md` 和 `references.yaml` 已包含全部信息
+- 只需：读 readme → 按 references.yaml 读文件 → 执行 → 输出 result.md
 
-TaskRunner Agent **不需要** 阅读 `spec/` 目录下的规范文件。每个任务的 `readme.md` 和 `references.yaml` 已经包含了执行任务所需的全部信息：
-
-- `readme.md`: 任务目标、验收标准、约束条件
-- `references.yaml`: 需要读取的上下文文件清单
-
-TaskRunner 只需要：
-1. 读取 `readme.md` 理解任务
-2. 按 `references.yaml` 列表读取项目文件
-3. 执行任务并输出 `result.md`
-
-这样可以避免上下文溢出，保持 TaskRunner 的专注性。
-
-#### 上下文管理最佳实践
-
-- **TreeWork 负责裁剪上下文**：通过 `references.yaml` 只传递必要文件
-- **避免上下文溢出**：不要把整个项目扔给 TaskRunner
-- **利用 `result.md` 传递信息**：将关键决策和输出通过 `result.md` 传递给后续任务
+**上下文管理**
+- TreeWork 负责裁剪，只传递必要文件
+- 不要把整个项目扔给 TaskRunner
+- 用 `result.md` 传递关键信息给后续任务
 
 ### 任务并行执行策略（经验建议）
 
-#### 适合并行执行的任务
+**适合并行**
+- 调研类（代码风格、结构分析、技术选型）
+- 整理文档（格式化、生成 API 文档）
+- 问题排查（仅到"发现问题"这一步）
 
-根据我的经验，这些任务之间通常没有强依赖关系，可以尝试同时启动多个 TaskRunner：
-
-- **调研类任务**
-  - 检查特定的代码风格
-  - 分析现有代码结构
-  - 研究技术选型
-
-- **整理文档**
-  - 格式化 Markdown 文档
-  - 生成 API 文档
-  - 编写使用说明
-
-- **问题排查（仅排查）**
-  - 诊断 bug 根因
-  - 定位性能瓶颈
-  - 分析日志和错误
-
-**个人建议**：问题排查任务可以并行到"发现问题"这一步，但具体修复方案建议您逐一 review。
-
-#### 建议线性执行的任务
-
-根据我的经验，这些任务存在依赖关系或需要人工 review，按顺序执行效果更好：
-
-- **代码 review 相关的任务**
-  - 任何涉及修改代码的任务
-  - 通常需要逐个 review 每个 TaskRunner 的输出
-  - Review 通过后再启动下一个任务
-
-- **有依赖关系的任务**
-  - 前置任务的输出是后置任务的输入
-  - 例如：API 设计 → API 实现 → API 测试
-
-- **需要整合结果的任务**
-  - 多个任务完成后需要合并结果
-  - 例如：多个模块实现 → 集成测试
+**建议线性**
+- 代码 review（需逐个 review 输出）
+- 有依赖的任务（API 设计 → 实现 → 测试）
+- 需要整合结果的任务
 
 #### 并行执行示例
 
-如果要尝试并行，可以先使用 `@treeWork populate <task_id>` 批量准备任务，例如：
-
 ```bash
-# 同时启动多个 TaskRunner（示例）
-session1> TaskRunner A: 读取 task-1.2.1/readme.md 并执行
-session2> TaskRunner B: 读取 task-1.2.2/readme.md 并执行
-session3> TaskRunner C: 读取 task-1.2.3/readme.md 并执行
+# 同时启动多个 TaskRunner
+session1> 读取 task-1.2.1/readme.md 并执行
+session2> 读取 task-1.2.2/readme.md 并执行
+session3> 读取 task-1.2.3/readme.md 并执行
 
-# 完成后批量接收结果
+# 完成后批量接收
 @treeWork receive 1.2.1 1.2.2 1.2.3
 ```
 
-**个人体会**：
-- 人类作为调度者，根据自己的判断决定哪些任务可以并行
-- 并行任务执行期间，可以在多个会话间切换 review
-- `@treeWork receive` 支持批量同步，可以简化进度更新
+**提示**：您决定哪些任务可以并行，期间可切换会话 review。
 
-### 自然语言交互（体验建议）
+### 自然语言交互
 
-得益于 LLM 对自然语言的高度理解，在与 TreeWork 交互时，我常常用很口语化的表达，TreeWork 都能准确理解并按照 spec 执行。
+TreeWork 理解自然语言，可以直接口语化交流：
 
-**日常使用的口语化示例**：
-
-| 正式命令 | 我的口语表达 |
-|---------|------------|
-| `@treeWork subtask 设计 API` | "开个 stubtask，设计一下 API" |
+| 正式命令 | 口语化 |
+|---------|-------|
+| `@treeWork subtask 设计 API` | "开个 subtask，设计一下 API" |
 | `@treeWork populate 1.2` | "populate 一下 1.2" |
 | `@treeWork done` | "task 1.2 done le" |
 | `@treeWork next 实现数据校验` | "下一个是实现数据校验" |
@@ -361,13 +296,7 @@ session3> TaskRunner C: 读取 task-1.2.3/readme.md 并执行
 | `@treeWork status` | "现在到哪一步了？" |
 | `@treeWork receive 1.2.1 1.2.2` | "1.2.1 和 1.2.2 都完成了，接收一下" |
 
-**个人体验**：
-- 完全不需要记忆那些正式命令名称
-- 用最自然的中文表达就能得到准确的执行结果
-- TreeWork 会根据上下文理解意图并映射到正确的操作
-- 交互更像在和同事对话，而不是在执行命令
-
-**我的建议**：刚开始可以对照 command reference，熟悉后直接用自然语言沟通，效率更高。
+**个人体会**：不用记忆命令，自然表达就能准确执行。
 
 ## 工作流图
 
