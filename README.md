@@ -151,13 +151,7 @@ done
 
 将上述输出内容直接粘贴到 LLM 对话中，即可让 Agent 完整理解系统规范。
 
-### Step 0.5: 设置您的 Agent
-
-指示您的 LLM Agent 在开始前读取 `spec/` 目录中的所有文件：
-
-> **Agent 设置提示词**: 作为 Bird-Eye Agent System 工作。首先，阅读 `spec/` 目录中的所有文件以理解系统。不要跳过任何文件。
-
-这确保 Agent 对系统架构和工作流有完整了解。
+> **可选确认**: 让 LLM 确认已理解系统："你已阅读所有 spec 文件，确认理解 Bird-Eye Agent System 的架构和工作流。"
 
 ### Step 1: 初始化任务
 
