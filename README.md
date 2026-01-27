@@ -242,7 +242,7 @@ TreeWork 读取 `result.md`，更新进度树，并建议下一步。
 - 不读取文件，任务分解和树状图生成不需要强算力
 
 **TaskRunner Agent** - 用强模型
-- Claude 3.5 Sonnet, GPT-4o, Gemini Pro
+- Claude Sonnet 4.5, Gemini Pro, Claude Opus 4.5
 - 需要准确理解代码、生成高质量代码、解决复杂问题
 
 ### Agent 使用注意事项
@@ -468,6 +468,46 @@ TreeWork 理解自然语言，可以直接口语化交流：
 - **敏捷适应**: 需求变更时快速调整
 
 您是鸟，AI Agents 是您的眼睛和手。
+
+## 作为 OpenCode Skill 安装
+
+本系统可以作为 OpenCode skill 直接安装，让任何支持 OpenCode 的 LLM 都能使用 Bird-Eye 的双 Agent 协作能力。
+
+### 安装步骤
+
+将整个 repo 下载到你的 skills 目录即可：
+
+**全局安装（所有项目可用）**：
+```bash
+mkdir -p ~/.config/opencode/skills
+curl -sL https://github.com/victor-develop/bird-eye-agent-system/archive/refs/heads/master.tar.gz | tar xz -C ~/.config/opencode/skills && mv ~/.config/opencode/skills/bird-eye-agent-system-master ~/.config/opencode/skills/bird-eye
+```
+
+**项目本地安装（仅当前项目可用）**：
+```bash
+curl -sL https://github.com/victor-develop/bird-eye-agent-system/archive/refs/heads/master.tar.gz | tar xz && mv bird-eye-agent-system-master .opencode/skills/bird-eye
+```
+
+### 验证安装
+
+在 OpenCode 环境中运行：
+```
+opencode skill list
+```
+
+你应该看到 `bird-eye` skill 在列表中。
+
+### 使用方式
+
+安装后，直接在对话中使用：
+```
+@treeWork init 实现用户登录功能
+```
+
+或
+```
+@taskRunner
+```
 
 ## 贡献
 
