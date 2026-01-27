@@ -9,7 +9,7 @@
 - **清晰的任务分解**：可视化依赖树，随时了解全局状态
 - **精确的上下文控制**：每个任务独立配置上下文，避免信息溢出
 - **完全可见性**：所有进度和决策都在 Markdown/YAML 文件中
-- **Git 友好**：基于文件系统的状态管理，支持分支、回滚、协作
+- **Git 友好**：基于文件系统的状态管理，随时可重新恢复进度，支持分支、回滚、协作
 
 ## 架构
 
@@ -92,7 +92,7 @@ csv-import-feature/
 
 启动新的 TaskRunner Agent 会话：
 ```
-作为 TaskRunner agent 工作。读取 task-1.2.1/readme.md 以理解任务，然后执行它。
+按照 task-1.2.1/readme.md 的描述完成任务。
 ```
 
 TaskRunner 读取规范、执行任务、生成 `result.md`。
@@ -176,6 +176,16 @@ TreeWork 读取 `result.md`，更新进度树，建议下一步。
         ├── references.yaml
         └── result.md
 ```
+
+## 使用建议
+
+### 模型选择
+- **TreeWork Agent**：用便宜、快的模型（Grok Fast, Gemini Flash, GLM-4.6V-Flash）
+- **TaskRunner Agent**：用强模型（Claude Sonnet 4.5, Gemini Pro, Claude Opus 4.5）
+
+### 任务并行执行
+**适合并行**：调研类、整理文档、问题排查
+**建议线性**：代码 review、有依赖的任务、需整合结果的任务
 
 ## 深入文档
 
