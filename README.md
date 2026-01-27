@@ -105,55 +105,47 @@ Bird-Eye 采用双 Agent 架构，职责明确分离：
 
 ## 快速开始
 
-### Step 0: 下载规范文档
+Bird-Eye 提供两种使用方式，选择最适合您的场景：
 
-**如果您是人类用户**：
+### 方式一：项目级使用（推荐用于单个项目）
 
-克隆仓库以获取所有规范文件：
+下载规范文件到当前工作目录的 `.bird-eye` 文件夹：
 
 ```bash
-git clone https://github.com/victor-develop/bird-eye-agent-system.git
-cd bird-eye-agent-system
+curl -sL https://github.com/victor-develop/bird-eye-agent-system/archive/refs/heads/master.tar.gz | tar xz --strip-components=1 -C .bird-eye
 ```
 
-所有规范文档都在 `spec/` 目录中，可直接使用。
+所有规范文档都在 `.bird-eye/spec/` 目录中。
+
+> **如果您是 LLM Agent**：读取 `.bird-eye/spec` 目录下的所有文件，理解 Bird-Eye Agent System 的架构和工作流。确认后回复："我已理解 Bird-Eye Agent System 的架构和工作流。"
+
+### 方式二：作为 OpenCode Skill 安装（全局使用）
+
+将本系统安装为 OpenCode skill，所有项目都可以直接使用 `@treeWork` 和 `@taskRunner` 命令。
+
+**全局安装（所有项目可用）**：
+```bash
+mkdir -p ~/.config/opencode/skills
+curl -sL https://github.com/victor-develop/bird-eye-agent-system/archive/refs/heads/master.tar.gz | tar xz -C ~/.config/opencode/skills && mv ~/.config/opencode/skills/bird-eye-agent-system-master ~/.config/opencode/skills/bird-eye
+```
+
+**项目本地安装（仅当前项目可用）**：
+```bash
+curl -sL https://github.com/victor-develop/bird-eye-agent-system/archive/refs/heads/master.tar.gz | tar xz && mv bird-eye-agent-system-master .opencode/skills/bird-eye
+```
+
+**验证安装**：
+```bash
+opencode skill list
+```
+
+你应该看到 `bird-eye` skill 在列表中。
 
 ---
 
-**如果您是 LLM Agent**：
+### 开始使用 Bird-Eye
 
-无需克隆仓库，直接通过 curl 获取 spec 文件内容：
-
-```bash
-# 读取所有 spec 文件
-curl https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/README.md
-
-curl https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/01-treework-agent.md
-
-curl https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/02-taskrunner-agent.md
-
-curl https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/03-file-formats.md
-
-curl https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/04-command-reference.md
-
-curl https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/05-workflow-example.md
-```
-
-或者使用一个命令一次性读取所有文件（推荐）：
-
-```bash
-for file in README.md 01-treework-agent.md 02-taskrunner-agent.md 03-file-formats.md 04-command-reference.md 05-workflow-example.md; do
-  echo "=== spec/$file ==="
-  curl -s https://raw.githubusercontent.com/victor-develop/bird-eye-agent-system/master/spec/$file
-  echo ""
-done
-```
-
-将上述输出内容直接粘贴到 LLM 对话中，即可让 Agent 完整理解系统规范。
-
-> **可选确认**: 让 LLM 确认已理解系统："你已阅读所有 spec 文件，确认理解 Bird-Eye Agent System 的架构和工作流。"
-
-### Step 1: 初始化任务
+**Step 1: 初始化任务**
 
 启动新项目或功能：
 
@@ -169,7 +161,7 @@ csv-import-feature/
 └── progress.md        # ASCII 任务树
 ```
 
-### Step 2: 规划和创建任务
+**Step 2: 规划和创建任务**
 
 细化任务树：
 
@@ -185,7 +177,7 @@ csv-import-feature/
     └── references.yaml   # 此任务的上下文
 ```
 
-### Step 2.5: 微调上下文（可选）
+**Step 3: 微调上下文（可选）**
 
 在启动 TaskRunner 前，您可以编辑任务文件来调整上下文：
 
@@ -211,7 +203,7 @@ csv-import-feature/
 
 这个步骤让 TaskRunner 获得"恰好所需"的上下文。
 
-### Step 3: 执行任务
+**Step 4: 执行任务**
 
 启动新的 TaskRunner Agent 会话并指示其读取任务规范：
 
@@ -219,7 +211,7 @@ csv-import-feature/
 
 TaskRunner 读取 `readme.md` 文件，执行任务，并在同一目录中生成 `result.md`。
 
-### Step 4: 更新进度
+**Step 5: 更新进度**
 
 向 TreeWork 报告完成情况：
 
@@ -229,9 +221,9 @@ TaskRunner 读取 `readme.md` 文件，执行任务，并在同一目录中生�
 
 TreeWork 读取 `result.md`，更新进度树，并建议下一步。
 
-### Step 5: 继续迭代
+**Step 6: 继续迭代**
 
-重复步骤 2-4，直到任务完成。
+重复步骤 2-5，直到任务完成。
 
 ## 使用建议
 
@@ -468,46 +460,6 @@ TreeWork 理解自然语言，可以直接口语化交流：
 - **敏捷适应**: 需求变更时快速调整
 
 您是鸟，AI Agents 是您的眼睛和手。
-
-## 作为 OpenCode Skill 安装
-
-本系统可以作为 OpenCode skill 直接安装，让任何支持 OpenCode 的 LLM 都能使用 Bird-Eye 的双 Agent 协作能力。
-
-### 安装步骤
-
-将整个 repo 下载到你的 skills 目录即可：
-
-**全局安装（所有项目可用）**：
-```bash
-mkdir -p ~/.config/opencode/skills
-curl -sL https://github.com/victor-develop/bird-eye-agent-system/archive/refs/heads/master.tar.gz | tar xz -C ~/.config/opencode/skills && mv ~/.config/opencode/skills/bird-eye-agent-system-master ~/.config/opencode/skills/bird-eye
-```
-
-**项目本地安装（仅当前项目可用）**：
-```bash
-curl -sL https://github.com/victor-develop/bird-eye-agent-system/archive/refs/heads/master.tar.gz | tar xz && mv bird-eye-agent-system-master .opencode/skills/bird-eye
-```
-
-### 验证安装
-
-在 OpenCode 环境中运行：
-```
-opencode skill list
-```
-
-你应该看到 `bird-eye` skill 在列表中。
-
-### 使用方式
-
-安装后，直接在对话中使用：
-```
-@treeWork init 实现用户登录功能
-```
-
-或
-```
-@taskRunner
-```
 
 ## 贡献
 
