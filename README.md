@@ -30,7 +30,7 @@ Human User → @treeWork → 拆分任务和全局视图 → Human 微调上下�
 下载规范文件到当前工作目录的 `.bird-eye` 文件夹：
 
 ```bash
-curl -sL https://github.com/victor-develop/bird-eye-agent-system/archive/refs/heads/master.tar.gz | tar xz --strip-components=1 -C .bird-eye
+mkdir -p .bird-eye && curl -sL https://github.com/victor-develop/bird-eye-agent-system/archive/refs/heads/master.tar.gz | tar xz --strip-components=1 -C .bird-eye
 ```
 
 所有规范文档都在 `.bird-eye/spec/` 目录中。
