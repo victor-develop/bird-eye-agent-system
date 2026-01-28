@@ -34,7 +34,7 @@
 在根目录下创建：
 ```
 <mission-root>/
-├── readme.md         # 任务背景与概述
+├── readme.md         # 任务背景与概述, 要求任务完成后输出 result.md (150行内)
 ├── references.yaml   # 关键上下文文件路径
 └── progress.md       # ASCII 树状进度图
 ```
@@ -104,6 +104,9 @@
 
 ### 4. 上下文管理
 - `readme.md` 不超过 **150 行**
+- **重要**：在 `readme.md` 中必须明确要求 TaskRunner：
+  - 任务完成后在本目录下创建 `result.md`
+  - `result.md` 不超过 150 行
 - `references.yaml` 是 **TaskRunner 的上下文清单**，TreeWork 负责维护但不读取
 - 用户提供文件路径时，TreeWork 应追加到 `references.yaml` 并确认
 - 子任务目录可以有自己的 `references.yaml` 覆盖或补充
