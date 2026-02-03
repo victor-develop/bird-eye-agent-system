@@ -23,34 +23,61 @@ Human User → @treeWork → 拆分任务和全局视图 → Human 微调上下�
 - **Human**：在 TreeWork 和 TaskRunner 之间，**微调上下文文件**（编辑 readme.md 和 references.yaml），确保 TaskRunner 拥有恰好所需的信息。
 - **TaskRunner Agent**：执行单个任务、生成执行报告。不管理任务树。
 
-## 快速开始
+ ## 快速开始
 
-### 方式一：项目级使用（推荐用于单个项目）
+ ### 方式一：项目级使用（推荐用于单个项目）
 
-下载规范文件到当前工作目录的 `.bird-eye` 文件夹：
+ 下载规范文件到当前工作目录的 `.bird-eye` 文件夹：
 
-```bash
-mkdir -p .bird-eye/spec && curl -sL https://github.com/victor-develop/bird-eye-agent-system/archive/refs/heads/master.tar.gz | tar xz -C .bird-eye/spec --strip-components=2
-```
+ ```bash
+ mkdir -p .bird-eye/spec && curl -sL https://github.com/victor-develop/bird-eye-agent-system/archive/refs/heads/master.tar.gz | tar xz -C .bird-eye/spec --strip-components=2
+ ```
 
-所有规范文档都在 `.bird-eye/spec/` 目录中。
+ 所有规范文档都在 `.bird-eye/spec/` 目录中。
 
-> **如果您是 LLM Agent**：读取 `.bird-eye/spec` 目录下的所有文件，理解 Bird-Eye Agent System 的架构和工作流。确认后回复："我已理解 Bird-Eye Agent System 的架构和工作流。"
+ > **如果您是 LLM Agent**：读取 `.bird-eye/spec` 目录下的所有文件，理解 Bird-Eye Agent System 的架构和工作流。确认后回复："我已理解 Bird-Eye Agent System 的架构和工作流。"
 
-### 方式二：作为 OpenCode Skill 安装（全局使用）
+ ### 方式二：作为 OpenCode Agents 安装（推荐）
 
-**全局安装（所有项目可用）**：
-```bash
-mkdir -p ~/.config/opencode/skills
-curl -sL https://github.com/victor-develop/bird-eye-agent-system/archive/refs/heads/master.tar.gz | tar xz -C ~/.config/opencode/skills && mv ~/.config/opencode/skills/bird-eye-agent-system-master ~/.config/opencode/skills/bird-eye
-```
+ Bird-Eye Agent System 可以作为 OpenCode 的 Agents 和 Skills 安装，获得完整的任务规划和执行功能。
 
-**项目本地安装（仅当前项目可用）**：
-```bash
-curl -sL https://github.com/victor-develop/bird-eye-agent-system/archive/refs/heads/master.tar.gz | tar xz && mv bird-eye-agent-system-master .opencode/skills/bird-eye
-```
+ **本地安装（仅当前项目可用）**：
+ ```bash
+ git clone https://github.com/victor-develop/bird-eye-agent-system.git
+ cd bird-eye-agent-system
+ ./install.sh
+ ```
 
-**验证安装**：`opencode skill list`，应该看到 `bird-eye` skill。
+ **全局安装（所有项目可用）**：
+ ```bash
+ git clone https://github.com/victor-develop/bird-eye-agent-system.git
+ cd bird-eye-agent-system
+ ./install.sh --global
+ ```
+
+ **查看安装选项**：
+ ```bash
+ ./install.sh --help
+ ```
+
+ 安装脚本会自动：
+ - 将 YAML 格式的 agent 配置转换为 OpenCode 可用的 Markdown 格式
+ - 创建所需的技能文件（SKILL.md）
+ - 将文件放置到正确的目录中
+
+ **验证安装**：
+ ```bash
+ # 在 OpenCode TUI 中使用
+ @treework status
+ @taskrunner execute
+ ```
+
+ 或者在 CLI 中：
+ ```bash
+ opencode agent list  # 应该看到 treework 和 taskrunner
+ ```
+
+ 更多安装和使用详情请参考 [opencode-agents/README.md](./opencode-agents/README.md)。
 
 ---
 
