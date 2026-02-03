@@ -1,13 +1,14 @@
-# Bird-Eye Agent System - OpenCode Agents 安装指南
+ # Bird-Eye Agent System - OpenCode Agents 安装指南
 
-本目录包含将 Bird-Eye Agent System 转换为 OpenCode Agents 的配置文件。
+ 本目录包含将 Bird-Eye Agent System 转换为 OpenCode Agents 的配置文件。
 
-## 概述
+ ## 概述
 
-Bird-Eye Agent System 是一个双代理任务编排框架，包含两个专用代理：
+ Bird-Eye Agent System 是一个双代理任务编排框架，包含两个专用代理：
 
-- **TreeWork Agent** (`treework-agent.yaml`): 任务规划与进度追踪专家
-- **TaskRunner Agent** (`taskrunner-agent.yaml`): 单任务执行专家
+ - **TreeWork Agent** (`treework-agent.yaml`): 任务规划与进度追踪专家
+ - **TaskRunner Agent** (`taskrunner-agent.yaml`): 单任务执行专家
+ - **Skills** (`../opencode-skills/`): 文件生成技能模板，确保 agents 能按照规范格式创建文件
 
 ## 系统架构
 
@@ -287,14 +288,26 @@ Mission: CSV 导入功能
 - 支持的命令
 - 使用示例
 
-### taskrunner-agent.yaml
+ ### taskrunner-agent.yaml
 
-配置了 TaskRunner Agent 的：
-- 代理名称、版本、描述
-- 角色定义和系统提示词
-- 能力和约束
-- 支持的命令
-- 使用示例
+ 配置了 TaskRunner Agent 的：
+ - 代理名称、版本、描述
+ - 角色定义和系统提示词
+ - 能力和约束
+ - 支持的命令
+ - 使用示例
+
+ ### opencode-skills/ 目录
+
+ 包含 agents 使用的文件生成技能模板：
+
+ - `treework/scaffold-mission-readme.md` - Mission 根目录 readme.md 生成技能
+ - `treework/scaffold-references-yaml.md` - references.yaml 生成技能
+ - `treework/scaffold-progress-md.md` - progress.md 生成技能
+ - `treework/scaffold-task-readme.md` - Task 目录 readme.md 生成技能
+ - `taskrunner/scaffold-result-md.md` - result.md 生成技能
+
+ 这些 skills 确保 agents 按照规范格式创建文件，避免格式不一致的问题。Agent 在执行相关命令时会自动参考对应的 skill 文件。
 
 ## 常见问题
 

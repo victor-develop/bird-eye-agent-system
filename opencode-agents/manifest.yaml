@@ -3,10 +3,13 @@ version: 1.0.0
 title: Bird-Eye Agent System
 description: |
   一个双代理任务编排框架，用于管理复杂的开发任务
-  
+
   包含两个专用代理：
   - TreeWork Agent: 任务规划与进度追踪专家
   - TaskRunner Agent: 单任务执行专家
+
+  包含文件生成技能：
+  - Mission/task readme.md、references.yaml、progress.md、result.md 生成技能
 
 author: Bird-Eye Team
 license: MIT
@@ -26,6 +29,7 @@ categories:
   - planning
   - execution
   - progress-tracking
+  - file-scaffolding
 
 tags:
   - multi-agent
@@ -34,6 +38,7 @@ tags:
 
 documentation:
   - README.md
+  - ../opencode-skills/README.md
   - ../spec/README.md
   - ../spec/01-treework-agent.md
   - ../spec/02-taskrunner-agent.md
