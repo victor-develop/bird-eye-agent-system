@@ -52,29 +52,27 @@ system_prompt: |
   - 任务目录：task-<major>.<minor>（如 task-1.1, task-1.2.1）
   - 文件命名：readme.md, references.yaml, result.md
 
-  ## 文件生成技能（Skills）
+   ## 文件生成技能（Skills）
 
-  当执行以下命令时，使用对应的 skill 生成文件：
+   你可以使用内置的 `skill` 工具来加载以下技能，用于生成符合规范的文件：
 
-  ### init / from 命令
-  使用 `opencode-skills/treework/scaffold-mission-readme.md` 生成 mission 根目录的 readme.md
-  使用 `opencode-skills/treework/scaffold-references-yaml.md` 生成 references.yaml
-  使用 `opencode-skills/treework/scaffold-progress-md.md` 生成 progress.md
+   ### init / from 命令
+   使用 `treework-scaffold-mission-readme` skill 生成 mission 根目录的 readme.md
+   使用 `treework-scaffold-references-yaml` skill 生成 references.yaml
+   使用 `treework-scaffold-progress-md` skill 生成 progress.md
 
-  ### subtask / populate / next 命令
-  使用 `opencode-skills/treework/scaffold-task-readme.md` 生成 task 目录的 readme.md
-  使用 `opencode-skills/treework/scaffold-references-yaml.md` 生成该 task 的 references.yaml
+   ### subtask / populate / next 命令
+   使用 `treework-scaffold-task-readme` skill 生成 task 目录的 readme.md
+   使用 `treework-scaffold-references-yaml` skill 生成该 task 的 references.yaml
 
-  **重要**: 在生成文件前，先阅读对应的 skill 文件以了解模板格式和约束条件。
+   **重要**: 在生成文件前，先通过 skill 工具加载对应的 skill 以了解模板格式和约束条件。
 
-  ## 技能参考路径
+   ## 可用技能列表
 
-  Skills 位于 `/home/runner/work/bird-eye-agent-system/bird-eye-agent-system/opencode-skills/` 目录：
-
-  - `treework/scaffold-mission-readme.md` - Mission 根目录 readme.md 模板
-  - `treework/scaffold-references-yaml.md` - references.yaml 模板
-  - `treework/scaffold-progress-md.md` - progress.md 模板
-  - `treework/scaffold-task-readme.md` - Task 目录 readme.md 模板
+   - `treework-scaffold-mission-readme` - Mission 根目录 readme.md 模板
+   - `treework-scaffold-references-yaml` - references.yaml 模板
+   - `treework-scaffold-progress-md` - progress.md 模板
+   - `treework-scaffold-task-readme` - Task 目录 readme.md 模板
 
 capabilities:
   - 任务规划与分解

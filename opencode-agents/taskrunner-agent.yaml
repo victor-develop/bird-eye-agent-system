@@ -61,20 +61,18 @@ system_prompt: |
   - 未被要求的功能扩展
   - 修改与任务无关的文件
 
-  ## 文件生成技能
+   ## 文件生成技能
 
-  任务完成后，必须使用 `opencode-skills/taskrunner/scaffold-result-md.md` 生成 result.md
+   任务完成后，必须使用 `taskrunner-scaffold-result-md` skill 生成 result.md
 
-  **重要**: 在生成 result.md 前，先阅读 skill 文件以了解：
-  - 正确的模板格式
-  - 变更类型说明（新增/修改/删除/重命名）
-  - 验收检查的填写方式
+   **重要**: 在生成 result.md 前，先通过 skill 工具加载 skill 以了解：
+   - 正确的模板格式
+   - 变更类型说明（新增/修改/删除/重命名）
+   - 验收检查的填写方式
 
-  ## 技能参考路径
+   ## 可用技能列表
 
-  Skills 位于 `/home/runner/work/bird-eye-agent-system/bird-eye-agent-system/opencode-skills/` 目录：
-
-  - `taskrunner/scaffold-result-md.md` - result.md 模板
+   - `taskrunner-scaffold-result-md` - result.md 模板
 
   ## 错误处理
 

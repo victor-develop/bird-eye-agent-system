@@ -6,9 +6,9 @@
 
  Bird-Eye Agent System 是一个双代理任务编排框架，包含两个专用代理：
 
- - **TreeWork Agent** (`treework-agent.yaml`): 任务规划与进度追踪专家
- - **TaskRunner Agent** (`taskrunner-agent.yaml`): 单任务执行专家
- - **Skills** (`../opencode-skills/`): 文件生成技能模板，确保 agents 能按照规范格式创建文件
+ - **TreeWork Agent** (`treework.md`): 任务规划与进度追踪专家
+ - **TaskRunner Agent** (`taskrunner.md`): 单任务执行专家
+ - **Skills**: 文件生成技能模板，确保 agents 能按照规范格式创建文件
 
 ## 系统架构
 
@@ -18,169 +18,171 @@ Human User (调度者) → @treeWork (规划) → @taskRunner (执行)
                  创建任务规格          执行具体任务
 ```
 
-## 安装步骤
+ ## 安装步骤
 
-### 1. 前置要求
+ ### 1. 前置要求
 
-确保已安装 OpenCode CLI 工具。
+ 确保已安装 OpenCode CLI 工具。
 
-### 2. 安装代理
+ ### 2. 安装 Agents 和 Skills
 
-使用以下命令安装代理：
+ 使用项目根目录的安装脚本进行安装：
 
-```bash
-# 安装 TreeWork Agent
-opencode agent install treework-agent.yaml
+ ```bash
+ # 从项目根目录运行（确保你在 bird-eye-agent-system 目录下）
+ cd /path/to/bird-eye-agent-system
 
-# 安装 TaskRunner Agent
-opencode agent install taskrunner-agent.yaml
-```
+ # 本地安装（安装到当前项目的 .opencode/ 目录）
+ ./install.sh
 
-### 3. 验证安装
+ # 全局安装（安装到 ~/.config/opencode/ 目录）
+ ./install.sh --global
 
-```bash
-# 检查已安装的代理
-opencode agent list
+ # 查看帮助信息
+ ./install.sh --help
+ ```
 
-# 应该看到：
-# - treework
-# - taskrunner
-```
+ 安装脚本会自动：
+ - 将 YAML 格式的 agent 配置转换为 OpenCode 可用的 Markdown 格式
+ - 将 skill 模板文件转换为 OpenCode 可用的 SKILL.md 格式
+ - 创建所需的目录结构
+ - 将文件放置到正确的目录中
 
-## 使用指南
+ ### 3. 验证安装
 
-### TreeWork Agent 使用
+ 安装完成后，在 OpenCode 中可以：
 
-TreeWork Agent 负责任务规划和进度追踪。
+ ```bash
+ # 使用 @treework 调用 TreeWork Agent
+ @treework status
 
-#### 初始化新任务
+ # 使用 @taskrunner 调用 TaskRunner Agent
+ @taskrunner execute
+ ```
 
-```bash
-# 初始化新任务
-opencode agent run treework init "实现 CSV 导入功能，支持批量导入商品数据"
-```
+ 或者在 TUI 中使用 `@` 键来调用这些 agents。
 
-#### 规划任务树
+ ### 安装位置说明
 
-```bash
-# 规划任务树（不创建文件）
-opencode agent run treework plan "后端需要：1. API设计 2. CSV解析 3. 数据校验 4. 批量写入"
+ | 安装模式 | Agents 目录 | Skills 目录 |
+ |----------|-------------|-------------|
+ | 本地 | `.opencode/agents/` | `.opencode/skills/` |
+ | 全局 | `~/.config/opencode/agents/` | `~/.config/opencode/skills/` |
 
-# 批量创建任务文件
-opencode agent run treework populate 1.2
-```
+ ## 使用指南
 
-#### 任务管理
+ ### TreeWork Agent 使用
 
-```bash
-# 创建子任务
-opencode agent run treework subtask "设计数据库 Schema"
+ TreeWork Agent 负责任务规划和进度追踪。
 
-# 完成当前任务，继续下一个
-opencode agent run treework next
+ 在 OpenCode TUI 或 CLI 中使用 `@treework` 调用：
 
-# 标记任务完成
-opencode agent run treework done "数据库设计已完成，共创建 5 个表"
+ ```bash
+ # 初始化新任务
+ @treework init "实现 CSV 导入功能，支持批量导入商品数据"
 
-# 废弃任务
-opencode agent run treework drop "需求变更，此功能不再需要"
-```
+ # 规划任务树（不创建文件）
+ @treework plan "后端需要：1. API设计 2. CSV解析 3. 数据校验 4. 批量写入"
 
-#### 导航与状态
+ # 批量创建任务文件
+ @treework populate 1.2
 
-```bash
-# 查看当前进度
-opencode agent run treework status
+ # 创建子任务
+ @treework subtask "设计数据库 Schema"
 
-# 跳转到指定任务
-opencode agent run treework goto 1.2.3
-```
+ # 完成当前任务，继续下一个
+ @treework next
 
-#### 上下文管理
+ # 标记任务完成
+ @treework done "数据库设计已完成，共创建 5 个表"
 
-```bash
-# 添加上下文引用
-opencode agent run treework ref backend/internal/service/product.go "现有商品服务实现"
+ # 废弃任务
+ @treework drop "需求变更，此功能不再需要"
 
-# 读取文件（唯一允许 TreeWork 读文件的命令）
-opencode agent run treework read docs/architecture-design.md
-```
+ # 查看当前进度
+ @treework status
 
-#### 结果同步
+ # 跳转到指定任务
+ @treework goto 1.2.3
 
-```bash
-# 接收单个任务结果
-opencode agent run treework receive 1.2.1
+ # 添加上下文引用
+ @treework ref backend/internal/service/product.go "现有商品服务实现"
 
-# 批量接收结果
-opencode agent run treework receive 1.2.1 1.2.2 1.2.3
+ # 读取文件（唯一允许 TreeWork 读文件的命令）
+ @treework read docs/architecture-design.md
 
-# 自动扫描所有进行中任务的结果
-opencode agent run treework receive
-```
+ # 接收单个任务结果
+ @treework receive 1.2.1
 
-### TaskRunner Agent 使用
+ # 批量接收结果
+ @treework receive 1.2.1 1.2.2 1.2.3
 
-TaskRunner Agent 负责执行具体的单个任务。
+ # 自动扫描所有进行中任务的结果
+ @treework receive
+ ```
 
-#### 执行任务
+ ### TaskRunner Agent 使用
 
-```bash
-# 进入任务目录
-cd task-1.1
+ TaskRunner Agent 负责执行具体的单个任务。
 
-# 执行任务
-opencode agent run taskrunner execute
-```
+ 在 OpenCode TUI 或 CLI 中使用 `@taskrunner` 调用：
 
-TaskRunner 会：
-1. 读取 readme.md 理解任务目标
-2. 读取 references.yaml 中的上下文文件
-3. 执行代码编写、文件修改等操作
-4. 创建 result.md 记录执行结果
+ ```bash
+ # 进入任务目录
+ cd task-1.1
 
-## 工作流示例
+ # 执行任务
+ @taskrunner execute
+ ```
 
-### 完整工作流程
+ TaskRunner 会：
+ 1. 读取 readme.md 理解任务目标
+ 2. 读取 references.yaml 中的上下文文件
+ 3. 执行代码编写、文件修改等操作
+ 4. 创建 result.md 记录执行结果
 
-```bash
-# 1. 使用 TreeWork 初始化任务
-opencode agent run treework init "实现用户认证功能"
+ ## 工作流示例
 
-# 2. 规划任务结构
-opencode agent run treework plan "需要：1. 设计数据库表 2. 实现 API 3. 编写测试"
+ ### 完整工作流程
 
-# 3. 批量创建任务文件
-opencode agent run treework populate 1
+ ```bash
+ # 1. 使用 TreeWork 初始化任务
+ @treework init "实现用户认证功能"
 
-# 4. 执行第一个任务（使用 TaskRunner）
-cd task-1.1
-opencode agent run taskrunner execute
+ # 2. 规划任务结构
+ @treework plan "需要：1. 设计数据库表 2. 实现 API 3. 编写测试"
 
-# 5. 回到根目录，接收结果并继续
-cd ..
-opencode agent run treework receive 1.1
+ # 3. 批量创建任务文件
+ @treework populate 1
 
-# 6. 继续下一个任务
-cd task-1.2
-opencode agent run taskrunner execute
-```
+ # 4. 执行第一个任务（使用 TaskRunner）
+ cd task-1.1
+ @taskrunner execute
 
-### 并行执行多个任务
+ # 5. 回到根目录，接收结果并继续
+ cd ..
+ @treework receive 1.1
 
-```bash
-# 规划并创建多个独立任务
-opencode agent run treework populate 1.2
+ # 6. 继续下一个任务
+ cd task-1.2
+ @taskrunner execute
+ ```
 
-# 在不同的终端并行执行
-cd task-1.2.1 && opencode agent run taskrunner execute
-cd task-1.2.2 && opencode agent run taskrunner execute
-cd task-1.2.3 && opencode agent run taskrunner execute
+ ### 并行执行多个任务
 
-# 批量接收结果
-cd ..
-opencode agent run treework receive
-```
+ ```bash
+ # 规划并创建多个独立任务
+ @treework populate 1.2
+
+ # 在不同的终端并行执行
+ cd task-1.2.1 && @taskrunner execute
+ cd task-1.2.2 && @taskrunner execute
+ cd task-1.2.3 && @taskrunner execute
+
+ # 批量接收结果
+ cd ..
+ @treework receive
+ ```
 
 ## 文件格式说明
 
@@ -277,48 +279,68 @@ Mission: CSV 导入功能
 - `[ok]` - 已完成，任务及其所有子任务都已完成
 - `[bin]` - 已废弃，需求变更导致任务不再需要
 
-## 配置文件说明
+ ## 配置文件说明
 
-### treework-agent.yaml
+ ### 安装后的 Agents
 
-配置了 TreeWork Agent 的：
-- 代理名称、版本、描述
-- 角色定义和系统提示词
-- 能力和约束
-- 支持的命令
-- 使用示例
+ 安装脚本会创建以下 agent 文件：
 
- ### taskrunner-agent.yaml
+ - **treework.md** - TreeWork Agent 配置
+ - **taskrunner.md** - TaskRunner Agent 配置
 
- 配置了 TaskRunner Agent 的：
- - 代理名称、版本、描述
- - 角色定义和系统提示词
- - 能力和约束
- - 支持的命令
- - 使用示例
+ 这些 Markdown 格式的文件包含：
+ - Frontmatter（元数据）：description, mode
+ - System Prompt：代理的系统提示词、能力、约束等
 
- ### opencode-skills/ 目录
+ ### 安装后的 Skills
 
- 包含 agents 使用的文件生成技能模板：
+ 安装脚本会创建以下技能文件：
 
- - `treework/scaffold-mission-readme.md` - Mission 根目录 readme.md 生成技能
- - `treework/scaffold-references-yaml.md` - references.yaml 生成技能
- - `treework/scaffold-progress-md.md` - progress.md 生成技能
- - `treework/scaffold-task-readme.md` - Task 目录 readme.md 生成技能
- - `taskrunner/scaffold-result-md.md` - result.md 生成技能
+ - **treework-scaffold-mission-readme/SKILL.md** - Mission 根目录 readme.md 生成技能
+ - **treework-scaffold-progress-md/SKILL.md** - progress.md 生成技能
+ - **treework-scaffold-references-yaml/SKILL.md** - references.yaml 生成技能
+ - **treework-scaffold-task-readme/SKILL.md** - Task 目录 readme.md 生成技能
+ - **taskrunner-scaffold-result-md/SKILL.md** - result.md 生成技能
 
- 这些 skills 确保 agents 按照规范格式创建文件，避免格式不一致的问题。Agent 在执行相关命令时会自动参考对应的 skill 文件。
+ 这些 skills 确保 agents 按照规范格式创建文件，避免格式不一致的问题。Agent 在执行相关命令时会通过 `skill` 工具加载对应的 skill。
 
-## 常见问题
+ ### 源文件
 
-### Q: 如何更新代理配置？
+ - **treework-agent.yaml** - TreeWork Agent 的 YAML 格式配置（源文件）
+ - **taskrunner-agent.yaml** - TaskRunner Agent 的 YAML 格式配置（源文件）
+ - **../opencode-skills/** - 技能模板源文件目录
 
-A: 修改对应的 YAML 文件后，重新安装：
+ ## 常见问题
 
-```bash
-opencode agent uninstall treework
-opencode agent install treework-agent.yaml
-```
+ ### Q: 如何更新代理或技能？
+
+ A: 修改对应的 YAML 或 skill 文件后，重新运行安装脚本：
+
+ ```bash
+ # 重新安装
+ ./install.sh
+
+ # 或全局重新安装
+ ./install.sh --global
+ ```
+
+ ### Q: 本地安装和全局安装有什么区别？
+
+ A:
+ - **本地安装**: 安装到当前项目的 `.opencode/` 目录，只在该项目中可用
+ - **全局安装**: 安装到 `~/.config/opencode/` 目录，在所有项目中可用
+
+ ### Q: 如何查看已安装的 agents 和 skills？
+
+ A: 在 OpenCode 中：
+
+ ```bash
+ # 列出所有可用的 agents（通过 Tab 键切换）
+ # 或使用 opencode agent list 命令
+
+ # 在 TUI 中，agents 会显示在 agent 切换菜单中
+ # Skills 可以通过 @ 提及或 skill 工具使用
+ ```
 
 ### Q: TreeWork 和 TaskRunner 如何协作？
 
