@@ -1,0 +1,67 @@
+name: bird-eye-agent-system
+version: 1.0.0
+title: Bird-Eye Agent System
+description: |
+  一个双代理任务编排框架，用于管理复杂的开发任务
+  
+  包含两个专用代理：
+  - TreeWork Agent: 任务规划与进度追踪专家
+  - TaskRunner Agent: 单任务执行专家
+
+author: Bird-Eye Team
+license: MIT
+language: zh-CN
+
+agents:
+  - name: treework
+    file: treework-agent.yaml
+    description: 任务规划与进度追踪专家
+    
+  - name: taskrunner
+    file: taskrunner-agent.yaml
+    description: 单任务执行专家
+
+categories:
+  - task-management
+  - planning
+  - execution
+  - progress-tracking
+
+tags:
+  - multi-agent
+  - task-orchestration
+  - workflow-management
+
+documentation:
+  - README.md
+  - ../spec/README.md
+  - ../spec/01-treework-agent.md
+  - ../spec/02-taskrunner-agent.md
+  - ../spec/03-file-formats.md
+  - ../spec/04-command-reference.md
+  - ../spec/05-workflow-example.md
+
+requirements:
+  - opencode-cli: ">=1.0.0"
+
+install:
+  script: install.sh
+  manual: |
+    # 手动安装步骤
+    opencode agent install treework-agent.yaml
+    opencode agent install taskrunner-agent.yaml
+
+uninstall:
+  manual: |
+    # 手动卸载步骤
+    opencode agent uninstall treework
+    opencode agent uninstall taskrunner
+
+changelog:
+  - version: 1.0.0
+    date: 2026-02-03
+    changes:
+      - 初始版本发布
+      - 将 Skill 转换为 OpenCode Agents
+      - 使用 YAML 格式配置文件
+      - 添加完整的安装和使用文档
